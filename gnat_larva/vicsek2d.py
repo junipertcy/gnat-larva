@@ -32,10 +32,9 @@ for i, theta in enumerate(thetas):
 
 # Currently run until time ends
 while t < T:
-    print(t)
     # save coordinates & corresponding thetas to text file
     output = np.concatenate((particles, thetas), axis=1)
-    np.savetxt("txt/{}.txt".format(t), output)
+    np.savetxt("txt/{}.txt".format(round(t, 2)), output)
 
     for i, (x, y) in enumerate(particles):
         # get neighbor indices for current particle

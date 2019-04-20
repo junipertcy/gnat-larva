@@ -1,5 +1,7 @@
 .idea/*
 .dropbox
+txt/*.txt
+img/*.png
 
 
 # Byte-compiled / optimized / DLL files

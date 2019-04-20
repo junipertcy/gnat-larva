@@ -39,9 +39,9 @@ def save_plot(file, eta):
 
     # title
     plt.title("$\eta$ = %.2f" % eta)
-
+    print(file[4:])
     # save plot
-    plt.savefig("img/%s.jpg" % file[10:-4])
+    plt.savefig("img/%s.png" % file[4:])
     plt.close()
 
     # clear for next plot
@@ -52,9 +52,7 @@ def save_plot(file, eta):
 
 eta = float(sys.argv[1])
 
-for file in glob.glob("particles/*.txt"):
-    print(file[10:])
-
+for file in glob.glob("txt/*.txt"):
     # read in data
     mat = np.loadtxt(file)
     coords = mat[:, 0:2]
