@@ -1,7 +1,7 @@
 # Copy & Pasted from https://github.com/alsignoriello/vicsek_model/
 import numpy as np
 import matplotlib.pyplot as plt
-from geometry import angle_2_vector
+from gnat_larva.geometry import angle_2_vector
 import glob
 import sys
 
@@ -53,7 +53,7 @@ def save_plot(file, eta):
 eta = float(sys.argv[1])
 
 for file in glob.glob("particles/*.txt"):
-    print file[10:]
+    print(file[10:])
 
     # read in data
     mat = np.loadtxt(file)
@@ -61,11 +61,3 @@ for file in glob.glob("particles/*.txt"):
     thetas = mat[:, 2]
     plot_vectors(coords, thetas)
     save_plot(file, eta)
-
-
-
-
-
-
-
-

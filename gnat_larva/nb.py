@@ -1,10 +1,9 @@
 # Copy & Pasted from https://github.com/alsignoriello/vicsek_model/
-import numpy as np
-from geometry import *
+from gnat_larva.geometry import *
 
 
 # returns a list of indices for all neighbors
-# includes itself as a neighor so it will be included in average
+# includes itself as a neighbor so it will be included in average
 def get_neighbors(particles, r, x0, y0):
     neighbors = []
 
@@ -31,7 +30,3 @@ def get_average(thetas, neighbors):
     avg_vector = avg_vector / n_neighbors
 
     return avg_vector
-
-
-
-

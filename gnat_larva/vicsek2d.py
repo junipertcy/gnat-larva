@@ -1,7 +1,6 @@
 # Copy & Pasted from https://github.com/alsignoriello/vicsek_model/
+from gnat_larva.nb import *
 import numpy as np
-from geometry import rand_angle, vector_2_angle
-from neighbor import *
 import sys
 
 
@@ -24,56 +23,53 @@ T = 5.
 # Generate random particle coordinations
 # particles[i,0] = x
 # particles[i,1] = y
-particles = np.random.uniform(0,1,size=(N,2))
+particles = np.random.uniform(0, 1, size=(N, 2))
 
 # initialize random angles
-thetas = np.zeros((N,1))
-for i,theta in enumerate(thetas):
-	thetas[i,0] = rand_angle()
-
+thetas = np.zeros((N, 1))
+for i, theta in enumerate(thetas):
+    thetas[i, 0] = rand_angle()
 
 # Currently run until time ends
 while t < T:
+    print(t)
+    # save coordinates & corresponding thetas to text file
+    output = np.concatenate((particles, thetas), axis=1)
+    np.savetxt("%.2f.txt" % t, output)
 
-	print t
-	# save coordinates & corresponding thetas to text file
-	output = np.concatenate((particles,thetas),axis=1)
-	np.savetxt("%.2f.txt" % t, output)
+    for i, (x, y) in enumerate(particles):
+        # get neighbor indices for current particle
+        neighbors = get_neighbors(particles, r, x, y)
 
+        # get average theta vector
+        avg = get_average(thetas, neighbors)
 
-	for i,(x,y) in enumerate(particles):
+        # get noise vector
+        nx = rand_angle()
+        ny = rand_angle()
+        noise = eta * np.array([nx, ny])
 
-		# get neighbor indices for current particle
-		neighbors = get_neighbors(particles, r, x, y)
+        # move to new position
+        particles[i, :] += delta_t * (avg + noise)
 
-		# get average theta vector
-		avg = get_average(thetas, neighbors)
+        # get new theta
+        thetas[i] = vector_2_angle(avg + noise)
 
-		# get noise vector
-		nx = rand_angle()
-		ny = rand_angle()
-		noise = eta * np.array([nx,ny])
+        # assure correct boundaries (xmax,ymax) = (1,1)
+        if particles[i, 0] < 0:
+            particles[i, 0] = 1 + particles[i, 0]
 
-		# move to new position
-		particles[i,:] += delta_t * (avg + noise)
+        if particles[i, 0] > 1:
+            particles[i, 0] = particles[i, 0] - 1
 
-		# get new theta
-		thetas[i] = vector_2_angle(avg + noise)
+        if particles[i, 1] < 0:
+            particles[i, 1] = 1 + particles[i, 1]
 
-		# assure correct boundaries (xmax,ymax) = (1,1)
-		if particles[i,0] < 0:
-			particles[i,0] = 1 + particles[i,0]
+        if particles[i, 1] > 1:
+            particles[i, 1] = particles[i, 1] - 1
 
-		if particles[i,0] > 1:
-			particles[i,0] = particles[i,0] - 1
+    # new time step
+    t += delta_t
 
-		if particles[i,1] < 0:
-			particles[i,1] = 1 + particles[i,1]
-
-		if particles[i,1] > 1:
-			particles[i,1] = particles[i,1] - 1
-
-	# new time step
-	t += delta_t
-
-
+if __name__ == "__main__":
+    pass
