@@ -1,0 +1,3 @@
+[submodule "vicsek_model"]
+	path = vicsek_model
+	url = https://github.com/alsignoriello/vicsek_model.git
