@@ -1,5 +1,5 @@
 # Copy & Pasted from https://github.com/alsignoriello/vicsek_model/
-from gnat_larva.nb import *
+from nb import *
 import numpy as np
 import sys
 
@@ -35,7 +35,7 @@ while t < T:
     print(t)
     # save coordinates & corresponding thetas to text file
     output = np.concatenate((particles, thetas), axis=1)
-    np.savetxt("%.2f.txt" % t, output)
+    np.savetxt("txt/{}.txt".format(t), output)
 
     for i, (x, y) in enumerate(particles):
         # get neighbor indices for current particle

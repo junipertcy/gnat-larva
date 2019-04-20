@@ -1,7 +1,7 @@
 # Copy & Pasted from https://github.com/alsignoriello/vicsek_model/
 import numpy as np
 import matplotlib.pyplot as plt
-from gnat_larva.geometry import angle_2_vector
+from geometry import angle_2_vector
 import glob
 import sys
 
@@ -41,7 +41,7 @@ def save_plot(file, eta):
     plt.title("$\eta$ = %.2f" % eta)
 
     # save plot
-    plt.savefig("plots/%s.jpg" % file[10:-4])
+    plt.savefig("img/%s.jpg" % file[10:-4])
     plt.close()
 
     # clear for next plot

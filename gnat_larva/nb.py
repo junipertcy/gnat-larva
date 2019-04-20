@@ -1,5 +1,5 @@
 # Copy & Pasted from https://github.com/alsignoriello/vicsek_model/
-from gnat_larva.geometry import *
+from geometry import *
 
 
 # returns a list of indices for all neighbors
