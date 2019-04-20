@@ -6,4 +6,14 @@ This program applies a 3D generalization of the Vicsek to simulate the behavior 
 We reused the codes of the [vicsek_model](https://github.com/alsignoriello/vicsek_model) repository (written by [Alexandra Signoriello](https://cbb.yale.edu/people/alexandra-signoriello) at Yale) on GitHub, and further developed our own 3D alternative.
 
 
+## Usage
 
+To run the code, do
+```python
+python gnat_larva/vicsek2d.py 100 1 2
+```
+
+Followed by,
+```python
+python gnat_larva/plot.py 0.1
+```
