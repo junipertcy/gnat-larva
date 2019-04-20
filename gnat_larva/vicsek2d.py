@@ -1,7 +1,9 @@
 # Copy & Pasted from https://github.com/alsignoriello/vicsek_model/
 from nb import *
+from utils import *
 import numpy as np
 import sys
+
 
 
 # number of particles
@@ -20,10 +22,7 @@ delta_t = 0.05
 t = 0.
 T = 5.
 
-# Generate random particle coordinations
-# particles[i,0] = x
-# particles[i,1] = y
-particles = np.random.uniform(0, 1, size=(N, 2))
+particles = init_boids(N)
 
 # initialize random angles
 thetas = np.zeros((N, 1))

@@ -15,17 +15,17 @@ def get_neighbors(particles, r, x0, y0):
 
     return neighbors
 
+
 def get_neighbors_3d(particles, r, x0, y0, z0):
+    neighbors = []
 
-	neighbors = []
+    for j, (x1, y1, z1) in enumerate(particles):
+        dist = euclidean_distance(x0, y0, z0, x1, y1, z1)
 
-	for j,(x1,y1,z1) in enumerate(particles):
-		dist = euclidean_distance(x0, y0, z0, x1, y1, z1)
+        if dist < r:
+            neighbors.append(j)
 
-		if dist < r:
-			neighbors.append(j)
-
-	return neighbors
+    return neighbors
 
 
 # average unit vectors for all angles
@@ -38,6 +38,21 @@ def get_average(thetas, neighbors):
         theta = thetas[index, 0]
         theta_vec = angle_2_vector(theta)
         avg_vector += theta_vec
+
+    avg_vector = avg_vector / n_neighbors
+
+    return avg_vector
+
+
+def get_average_3d(rand_vecs, neighbors):
+    n_neighbors = len(neighbors)
+    avg_vector = np.zeros(3)
+
+    for index in neighbors:
+        vec = rand_vecs[index]
+        v2 = np.array([0, 0, 0])
+        uv = unit_vector(vec, v2)
+        avg_vector += vec
 
     avg_vector = avg_vector / n_neighbors
 
