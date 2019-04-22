@@ -20,7 +20,7 @@ r = float(sys.argv[3])
 m = str(sys.argv[4])
 
 # time step
-delta_t = 0.001
+delta_t = 0.01
 
 # Maximum time
 t = 0.
@@ -42,7 +42,7 @@ for f in files:
 for t in tqdm(np.arange(0, 1, delta_t)):
     # save coordinates & corresponding thetas to text file
     output = np.concatenate((particles, thetas), axis=1)
-    np.savetxt("txt/{}.txt".format(round(t, 2)), output)
+    np.savetxt("txt/{}.txt".format(round(t, 3)), output)
 
     for i, (x, y) in enumerate(particles):
         # get neighbor indices for current particle
