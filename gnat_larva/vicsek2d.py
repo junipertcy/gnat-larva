@@ -22,7 +22,7 @@ delta_t = 0.05
 t = 0.
 T = 5.
 
-particles = init_boids(N)
+particles = init_boids(N, method="larva", r1=0.1, r2=0.02)
 
 # initialize random angles
 thetas = np.zeros((N, 1))
