@@ -13,9 +13,4 @@ To run the code, do
 python gnat_larva/vicsek2d.py 100 0.001 1 larva
 ```
 
-Followed by,
-```python
-python gnat_larva/plot.py 0.001
-```
-
 This will generate an image sequence in `img/`. To parse them into a video, use `ImageJ`.

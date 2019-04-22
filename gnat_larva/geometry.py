@@ -10,12 +10,22 @@ def vector_2_angle(v):
 
 
 # generate random angle theta between -pi - pi
-def rand_angle(method="birds"):
+def rand_angle(method="birds", **kwargs):
     if method == "birds":
         return np.random.uniform(-pi, pi)
     elif method == "larva":
-        d = 0.1
-        return np.random.uniform(0 - d * pi, 0 + d * pi)
+        try:
+            d = kwargs["depth"]
+        except KeyError:
+            raise(KeyError, "Assign depth to the rand_angle function please.")
+        noise = depth2noise(d)
+        return np.random.uniform(0 - noise * pi, 0 + noise * pi)
+
+
+def depth2noise(d):
+    a = 0.1
+    b = 0.1
+    return a * d + b
 
 
 # returns angle unit vector

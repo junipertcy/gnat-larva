@@ -40,5 +40,5 @@ def get_random_ellipse(n, r1, r2):
     return xout, yout
 
 
-def get_depth(n, depth=1):
-    return random.choices(range(depth), k=n)
+def get_depth(n, depth=0):
+    return random.choices(range(depth + 1), k=n)

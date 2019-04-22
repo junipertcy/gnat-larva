@@ -8,14 +8,27 @@ import os
 from tqdm import tqdm
 
 
-def plot_vectors(coords, thetas):
+def plot_vectors(coords, thetas, method="birds", **kwargs):
     # generate random color for every particle
-    colors = ["b", "g", "y", "m", "c", "pink", "purple", "seagreen",
-              "salmon", "orange", "paleturquoise", "midnightblue",
-              "crimson", "lavender"]
+    # [TCY]: I did not know that matplotlib can so colorful!
+    if method == "birds":
+        colors = ["b", "g", "y", "m", "c", "pink", "purple", "seagreen",
+                  "salmon", "orange", "paleturquoise", "midnightblue",
+                  "crimson", "lavender"]
+        depths = None
+    else:
+        colors = ["b", "grey"]
+        try:
+            depths = kwargs["depths"]
+        except KeyError:
+            raise(KeyError, "You have to feed in the `depths` argument in plot_vectors.")
 
     for i, (x, y) in enumerate(coords):
-        c = colors[i % len(colors)]
+        # c = colors[i % len(colors)]
+        if method == "birds":
+            c = colors[i % len(colors)]
+        else:
+            c = colors[depths[i]]
 
         # plot point
         plt.scatter(x, y, color=c, marker=".")
@@ -52,16 +65,3 @@ def save_plot(file, eta):
     return
 
 
-files = glob.glob("img/*.png")
-for f in files:
-    os.remove(f)
-
-eta = float(sys.argv[1])
-
-for file in tqdm(glob.glob("txt/*.txt")):
-    # read in data
-    mat = np.loadtxt(file)
-    coords = mat[:, 0:2]
-    thetas = mat[:, 2]
-    plot_vectors(coords, thetas)
-    save_plot(file, eta)
