@@ -10,10 +10,12 @@ We reused the codes of the [vicsek_model](https://github.com/alsignoriello/vicse
 
 To run the code, do
 ```python
-python gnat_larva/vicsek2d.py 100 1 2
+python gnat_larva/vicsek2d.py 100 0.001 1 larva
 ```
 
 Followed by,
 ```python
-python gnat_larva/plot.py 0.1
+python gnat_larva/plot.py 0.001
 ```
+
+This will generate an image sequence in `img/`. To parse them into a video, use `ImageJ`.

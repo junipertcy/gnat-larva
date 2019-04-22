@@ -17,3 +17,6 @@ matplotlib>=3.0.2
 
 # For some special functions
 scipy>=1.1.0
+
+# for displaying progress bar
+tqdm>=4.31.1

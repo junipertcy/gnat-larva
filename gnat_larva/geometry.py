@@ -10,9 +10,12 @@ def vector_2_angle(v):
 
 
 # generate random angle theta between -pi - pi
-def rand_angle():
-    theta = np.random.uniform(-pi, pi)
-    return theta
+def rand_angle(method="birds"):
+    if method == "birds":
+        return np.random.uniform(-pi, pi)
+    elif method == "larva":
+        d = 0.1
+        return np.random.uniform(0 - d * pi, 0 + d * pi)
 
 
 # returns angle unit vector

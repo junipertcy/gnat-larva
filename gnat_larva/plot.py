@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from geometry import angle_2_vector
 import glob
 import sys
+import os
+from tqdm import tqdm
 
 
 def plot_vectors(coords, thetas):
@@ -39,7 +41,6 @@ def save_plot(file, eta):
 
     # title
     plt.title("$\eta$ = %.2f" % eta)
-    print(file[4:])
     # save plot
     plt.savefig("img/%s.png" % file[4:])
     plt.close()
@@ -50,9 +51,13 @@ def save_plot(file, eta):
     return
 
 
+files = glob.glob("img/*.png")
+for f in files:
+    os.remove(f)
+
 eta = float(sys.argv[1])
 
-for file in glob.glob("txt/*.txt"):
+for file in tqdm(glob.glob("txt/*.txt")):
     # read in data
     mat = np.loadtxt(file)
     coords = mat[:, 0:2]

@@ -1,10 +1,11 @@
 # Copy & Pasted from https://github.com/alsignoriello/vicsek_model/
 from nb import *
 from utils import *
+import os
 import numpy as np
 import sys
-
-
+import glob
+from tqdm import tqdm
 
 # number of particles
 N = int(sys.argv[1])
@@ -15,22 +16,30 @@ eta = float(sys.argv[2])
 # neighbor radius
 r = float(sys.argv[3])
 
+# method (larva or birds)
+m = str(sys.argv[4])
+
 # time step
-delta_t = 0.05
+delta_t = 0.001
 
 # Maximum time
 t = 0.
-T = 5.
+T = 1.
 
-particles = init_boids(N, method="larva", r1=0.1, r2=0.02)
+particles = init_boids(N, method=m, r1=0.1, r2=0.02)
 
 # initialize random angles
 thetas = np.zeros((N, 1))
 for i, theta in enumerate(thetas):
-    thetas[i, 0] = rand_angle()
+    thetas[i, 0] = rand_angle(method=m)
+
+# remove existing files in `txt/`
+files = glob.glob("txt/*.txt")
+for f in files:
+    os.remove(f)
 
 # Currently run until time ends
-while t < T:
+for t in tqdm(np.arange(0, 1, delta_t)):
     # save coordinates & corresponding thetas to text file
     output = np.concatenate((particles, thetas), axis=1)
     np.savetxt("txt/{}.txt".format(round(t, 2)), output)
@@ -43,8 +52,8 @@ while t < T:
         avg = get_average(thetas, neighbors)
 
         # get noise vector
-        nx = rand_angle()
-        ny = rand_angle()
+        nx = rand_angle(method=m)
+        ny = rand_angle(method=m)
         noise = eta * np.array([nx, ny])
 
         # move to new position
