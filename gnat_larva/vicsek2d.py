@@ -6,6 +6,7 @@ import numpy as np
 import sys
 import glob
 from tqdm import tqdm
+from numba import jit
 
 # number of particles
 N = int(sys.argv[1])
@@ -39,44 +40,46 @@ for f in files:
     os.remove(f)
 
 # Currently run until time ends
-for t in tqdm(np.arange(0, 1, delta_t)):
-    # save coordinates & corresponding thetas to text file
-    output = np.concatenate((particles, thetas), axis=1)
-    np.savetxt("txt/{}.txt".format(round(t, 3)), output)
+@jit()
+def run():
+    idx = 0
+    for _ in tqdm(np.arange(t, T, delta_t)):
+        # save coordinates & corresponding thetas to text file
+        output = np.concatenate((particles, thetas), axis=1)
+        np.savetxt("txt/{}.txt".format(str(idx).zfill(6)), output)
 
-    for i, (x, y) in enumerate(particles):
-        # get neighbor indices for current particle
-        neighbors = get_neighbors(particles, r, x, y)
+        for i, (x, y) in enumerate(particles):
+            # get neighbor indices for current particle
+            neighbors = get_neighbors(particles, r, x, y)
 
-        # get average theta vector
-        avg = get_average(thetas, neighbors)
+            # get average theta vector
+            avg = get_average(thetas, neighbors)
 
-        # get noise vector
-        nx = rand_angle(method=m)
-        ny = rand_angle(method=m)
-        noise = eta * np.array([nx, ny])
+            # get noise vector
+            nx = rand_angle(method=m)
+            ny = rand_angle(method=m)
+            noise = eta * np.array([nx, ny])
 
-        # move to new position
-        particles[i, :] += delta_t * (avg + noise)
+            # move to new position
+            particles[i, :] += delta_t * (avg + noise)
 
-        # get new theta
-        thetas[i] = vector_2_angle(avg + noise)
+            # get new theta
+            thetas[i] = vector_2_angle(avg + noise)
 
-        # assure correct boundaries (xmax,ymax) = (1,1)
-        if particles[i, 0] < 0:
-            particles[i, 0] = 1 + particles[i, 0]
+            # assure correct boundaries (xmax,ymax) = (1,1)
+            if particles[i, 0] < 0:
+                particles[i, 0] = 1 + particles[i, 0]
 
-        if particles[i, 0] > 1:
-            particles[i, 0] = particles[i, 0] - 1
+            if particles[i, 0] > 1:
+                particles[i, 0] = particles[i, 0] - 1
 
-        if particles[i, 1] < 0:
-            particles[i, 1] = 1 + particles[i, 1]
+            if particles[i, 1] < 0:
+                particles[i, 1] = 1 + particles[i, 1]
 
-        if particles[i, 1] > 1:
-            particles[i, 1] = particles[i, 1] - 1
+            if particles[i, 1] > 1:
+                particles[i, 1] = particles[i, 1] - 1
+        idx += 1
 
-    # new time step
-    t += delta_t
 
 if __name__ == "__main__":
-    pass
+    run()

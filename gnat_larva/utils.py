@@ -1,5 +1,6 @@
 import numpy as np
 from numba import jit
+import random
 
 
 def init_boids(n, method="birds", **kwargs):
@@ -25,7 +26,7 @@ def init_boids(n, method="birds", **kwargs):
 def get_random_ellipse(n, r1, r2):
     xout = np.zeros(n)
     yout = np.zeros(n)
-    nkeep=0
+    nkeep = 0
     while nkeep < n:
         x = 2 * r1 * (np.random.random(n - nkeep) - 0.5)
         y = 2 * r2 * (np.random.random(n - nkeep) - 0.5)
@@ -37,3 +38,7 @@ def get_random_ellipse(n, r1, r2):
             nkeep += w.size
 
     return xout, yout
+
+
+def get_depth(n, depth=1):
+    return random.choices(range(depth), k=n)

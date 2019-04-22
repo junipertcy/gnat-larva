@@ -42,7 +42,8 @@ def save_plot(file, eta):
     # title
     plt.title("$\eta$ = %.3f" % eta)
     # save plot
-    plt.savefig("img/%s.png" % file[4:])
+    plt.savefig("img/%s.png" % file[4:10])
+
     plt.close()
 
     # clear for next plot
