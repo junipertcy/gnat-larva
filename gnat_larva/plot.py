@@ -1,11 +1,6 @@
 # Copy & Pasted from https://github.com/alsignoriello/vicsek_model/
-import numpy as np
 import matplotlib.pyplot as plt
-from geometry import angle_2_vector
-import glob
-import sys
-import os
-from tqdm import tqdm
+from .geometry import angle_2_vector
 
 
 def plot_vectors(coords, thetas, method="birds", **kwargs):
@@ -17,7 +12,7 @@ def plot_vectors(coords, thetas, method="birds", **kwargs):
                   "crimson", "lavender"]
         depths = None
     else:
-        colors = ["b", "grey"]
+        colors = ["grey", "b"]
         try:
             depths = kwargs["depths"]
         except KeyError:

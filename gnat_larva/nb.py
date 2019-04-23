@@ -1,5 +1,5 @@
 # Copy & Pasted from https://github.com/alsignoriello/vicsek_model/
-from geometry import *
+from .geometry import *
 
 
 # returns a list of indices for all neighbors

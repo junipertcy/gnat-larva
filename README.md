@@ -8,9 +8,15 @@ We reused the codes of the [vicsek_model](https://github.com/alsignoriello/vicse
 
 ## Usage
 
-To run the code, do
-```python
-python gnat_larva/vicsek2d.py 100 0.001 1 larva
+`vicsek` is a command line function. To see what it can do, type:
+
+```commandline
+python vicsek.py --help
+```
+
+To run the code, do:
+```commandline
+python vicsek.py --n 100 --eta 0.001 --r 0.05 --m larva
 ```
 
 This will generate an image sequence in `img/`. To parse them into a video, use `ImageJ`.

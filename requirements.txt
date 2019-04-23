@@ -20,3 +20,6 @@ scipy>=1.1.0
 
 # for displaying progress bar
 tqdm>=4.31.1
+
+# commandline
+click>=7.0

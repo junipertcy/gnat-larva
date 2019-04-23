@@ -1,56 +1,49 @@
 # Copy & Pasted from https://github.com/alsignoriello/vicsek_model/
-from nb import *
-from utils import *
-from plot import *
+from gnat_larva.nb import *
+from gnat_larva.utils import *
+from gnat_larva.plot import *
 import os
 import numpy as np
-import sys
 import glob
 from tqdm import tqdm
-from numba import jit
 
-# number of particles
-N = int(sys.argv[1])
+import click
 
-# noise intensity
-eta = float(sys.argv[2])
 
-# neighbor radius
-r = float(sys.argv[3])
+@click.command()
+@click.option('--n', default=100, type=int, help='number of agents')
+@click.option('--eta', default=0.01, type=float, help='noise intensity')
+@click.option('--r', default=0.1, type=float, help='neighbor radius')
+@click.option('--m', default='birds', type=str, help='method (larva or birds)')
+def run(n, eta, r, m):
+    # time step
+    delta_t = 0.05
 
-# method (larva or birds)
-m = str(sys.argv[4])
+    # Maximum time
+    t = 0.
+    T = 1.
 
-# time step
-delta_t = 0.05
+    particles = init_boids(n, method=m, r1=0.1, r2=0.02)
 
-# Maximum time
-t = 0.
-T = 1.
+    if m == "larva":
+        depths = get_depth(n, depth=1)
+    else:
+        depths = get_depth(n, depth=0)
 
-particles = init_boids(N, method=m, r1=0.1, r2=0.02)
+    # initialize random angles
+    thetas = np.zeros((n, 1))
+    for i, theta in enumerate(thetas):
+        thetas[i, 0] = rand_angle(method=m, depth=0)
 
-if m == "larva":
-    depths = get_depth(N, depth=1)
-else:
-    depths = get_depth(N, depth=0)
+    # remove existing files in `txt/` and `img/`
+    files = glob.glob("txt/*.txt")
+    for f in files:
+        os.remove(f)
+    files = glob.glob("img/*.png")
+    for f in files:
+        os.remove(f)
 
-# initialize random angles
-thetas = np.zeros((N, 1))
-for i, theta in enumerate(thetas):
-    thetas[i, 0] = rand_angle(method=m, depth=0)
 
-# remove existing files in `txt/` and `img/`
-files = glob.glob("txt/*.txt")
-for f in files:
-    os.remove(f)
-files = glob.glob("img/*.png")
-for f in files:
-    os.remove(f)
-
-# Currently run until time ends
-@jit()
-def run():
     idx = 0
     for _ in tqdm(np.arange(t, T, delta_t)):
         # save coordinates & corresponding thetas to text file
