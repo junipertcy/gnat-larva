@@ -4,14 +4,19 @@ from .geometry import *
 
 # returns a list of indices for all neighbors
 # includes itself as a neighbor so it will be included in average
-def get_neighbors(particles, r, x0, y0):
+def get_neighbors(particles, r, x0, y0, method="birds", **kwargs):
     neighbors = []
 
     for j, (x1, y1) in enumerate(particles):
         dist = euclidean_distance(x0, y0, x1, y1)
-
-        if dist < r:
-            neighbors.append(j)
+        if method == "birds":
+            if dist < r:
+                neighbors.append(j)
+        elif method == "larva":
+            if dist < r and x0 < x1:
+                neighbors.append(j)
+        else:
+            raise NotImplementedError
 
     return neighbors
 
@@ -38,8 +43,11 @@ def get_average(thetas, neighbors):
         theta = thetas[index, 0]
         theta_vec = angle_2_vector(theta)
         avg_vector += theta_vec
-
-    avg_vector = avg_vector / n_neighbors
+    if n_neighbors == 0:
+        pass
+        # avg_vector = avg_vector + 0.0001
+    else:
+        avg_vector = avg_vector / n_neighbors
 
     return avg_vector
 

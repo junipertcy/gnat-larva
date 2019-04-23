@@ -17,7 +17,7 @@ import click
 @click.option('--m', default='birds', type=str, help='method (larva or birds)')
 def run(n, eta, r, m):
     # time step
-    delta_t = 0.05
+    delta_t = 0.01
 
     # Maximum time
     t = 0.
@@ -53,7 +53,7 @@ def run(n, eta, r, m):
 
         for agent_i, (x, y) in enumerate(particles):
             # get neighbor indices for current particle
-            neighbors = get_neighbors(particles, r, x, y)
+            neighbors = get_neighbors(particles, r, x, y, method=m)
 
             # get average theta vector
             avg = get_average(thetas, neighbors)
