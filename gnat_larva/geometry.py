@@ -23,7 +23,7 @@ def rand_angle(method="birds", **kwargs):
 
 
 def depth2noise(d):
-    a = .1
+    a = .5
     b = .1
     return a * d + b
 
