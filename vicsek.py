@@ -27,8 +27,11 @@ def run(n, eta, r, m):
 
     if m == "larva":
         depths = get_depth(n, depth=1)
+        # is_moving = np.ones(n)
+        is_moving = get_depth(n, depth=1)
     else:
         depths = get_depth(n, depth=0)
+        is_moving = None
 
     # initialize random angles
     thetas = np.zeros((n, 1))
@@ -43,7 +46,6 @@ def run(n, eta, r, m):
     for f in files:
         os.remove(f)
 
-
     idx = 0
     for _ in tqdm(np.arange(t, T, delta_t)):
         # save coordinates & corresponding thetas to text file
@@ -53,7 +55,12 @@ def run(n, eta, r, m):
 
         for agent_i, (x, y) in enumerate(particles):
             # get neighbor indices for current particle
-            neighbors = get_neighbors(particles, r, x, y, method=m)
+            neighbors, f_ = get_neighbors(particles, r, agent_i, x, y, method=m, is_moving=is_moving)
+            if m == "larva":
+                if f_ == 0:
+                    is_moving[agent_i] = 0
+                else:
+                    is_moving[agent_i] = 1
 
             # get average theta vector
             avg = get_average(thetas, neighbors)
@@ -63,11 +70,13 @@ def run(n, eta, r, m):
             ny = rand_angle(method=m, depth=depths[agent_i])
             noise = eta * np.array([nx, ny])
 
-            # move to new position
-            particles[agent_i, :] += delta_t * (avg + noise)
-
-            # get new theta
-            thetas[agent_i] = vector_2_angle(avg + noise)
+            # move to new position and get the new theta
+            if avg[0] == 0 and avg[1] == 0:
+                particles[agent_i, :] += delta_t * 0
+                thetas[agent_i] = vector_2_angle([0, 0])
+            else:
+                particles[agent_i, :] += delta_t * (avg + noise)
+                thetas[agent_i] = vector_2_angle(avg + noise)
 
             # assure correct boundaries (xmax,ymax) = (1,1)
             if particles[agent_i, 0] < 0:

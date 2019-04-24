@@ -48,7 +48,7 @@ def save_plot(file, eta):
     frame.axes.get_yaxis().set_ticks([])
 
     # title
-    plt.title("$\eta$ = %.3f" % eta)
+    plt.title("n = 100; Angular noise = %.3f; Sensible Radius = 0.5" % eta)
     # save plot
     plt.savefig("img/%s.png" % file[4:10])
 

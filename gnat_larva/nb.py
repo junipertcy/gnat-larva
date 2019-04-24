@@ -4,8 +4,10 @@ from .geometry import *
 
 # returns a list of indices for all neighbors
 # includes itself as a neighbor so it will be included in average
-def get_neighbors(particles, r, x0, y0, method="birds", **kwargs):
+def get_neighbors(particles, r, i, x0, y0, method="birds", **kwargs):
     neighbors = []
+    front_nbs = []
+    behind_nbs = []
 
     for j, (x1, y1) in enumerate(particles):
         dist = euclidean_distance(x0, y0, x1, y1)
@@ -15,10 +17,27 @@ def get_neighbors(particles, r, x0, y0, method="birds", **kwargs):
         elif method == "larva":
             if dist < r and x0 < x1:
                 neighbors.append(j)
+                front_nbs.append(j)
+            elif dist < r and x0 > x1:
+                neighbors.append(j)
+                behind_nbs.append(j)
         else:
             raise NotImplementedError
 
-    return neighbors
+    try:
+        f = kwargs["is_moving"]
+    except KeyError:
+        raise(KeyError, "Please feed in the `is_moving` argument.")
+
+    if method == "larva":
+        if len(front_nbs) == 0:
+            f[i] = 0
+        elif len(behind_nbs) == 0:
+            f[i] = 1
+
+        if f[i] == 0:
+            return [], 0
+    return neighbors, 1
 
 
 def get_neighbors_3d(particles, r, x0, y0, z0):
@@ -58,8 +77,6 @@ def get_average_3d(rand_vecs, neighbors):
 
     for index in neighbors:
         vec = rand_vecs[index]
-        v2 = np.array([0, 0, 0])
-        uv = unit_vector(vec, v2)
         avg_vector += vec
 
     avg_vector = avg_vector / n_neighbors
