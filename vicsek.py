@@ -24,6 +24,7 @@ def run(n, eta, r, m):
     T = 1.
 
     particles = init_boids(n, method=m, r1=0.1, r2=0.02)
+    foods = init_boids(10, method='birds')
 
     if m == "larva":
         depths = get_depth(n, depth=1)
@@ -63,7 +64,7 @@ def run(n, eta, r, m):
                     is_moving[agent_i] = 1
 
             # get average theta vector
-            avg = get_average(thetas, neighbors)
+            avg = get_average(thetas, neighbors, m, depths=depths)
 
             # get noise vector
             nx = rand_angle(method=m, depth=depths[agent_i])
@@ -98,6 +99,7 @@ def run(n, eta, r, m):
         coords_ = mat[:, 0:2]
         thetas_ = mat[:, 2]
         plot_vectors(coords_, thetas_, method=m, depths=depths)
+        plot_foods(foods)
         save_plot(filename, eta)
 
 

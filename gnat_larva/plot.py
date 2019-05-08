@@ -35,7 +35,11 @@ def plot_vectors(coords, thetas, method="birds", **kwargs):
         y1 = y - (0.025 * v[1])
         plt.plot([x, x1], [y, y1], color=c)
 
-    return
+
+def plot_foods(coords):
+    for _, (x, y) in enumerate(coords):
+        plt.scatter(x, y, color='red', marker=".")
+
 
 
 def save_plot(file, eta):

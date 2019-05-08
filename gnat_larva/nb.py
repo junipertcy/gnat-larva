@@ -54,14 +54,20 @@ def get_neighbors_3d(particles, r, x0, y0, z0):
 
 # average unit vectors for all angles
 # return average angle
-def get_average(thetas, neighbors):
+def get_average(thetas, neighbors, method, **kwargs):
     n_neighbors = len(neighbors)
     avg_vector = np.zeros(2)
-
     for index in neighbors:
         theta = thetas[index, 0]
         theta_vec = angle_2_vector(theta)
-        avg_vector += theta_vec
+        if method == "larva":
+            try:
+                depths = kwargs["depths"]
+            except KeyError:
+                raise (KeyError, "Please feed in the `depths` argument.")
+            avg_vector += ((depths[index] + 1) ** 1.1) * theta_vec
+        else:
+            avg_vector += theta_vec
     if n_neighbors == 0:
         pass
         # avg_vector = avg_vector + 0.0001
