@@ -65,7 +65,7 @@ def get_average(thetas, neighbors, method, **kwargs):
                 depths = kwargs["depths"]
             except KeyError:
                 raise (KeyError, "Please feed in the `depths` argument.")
-            avg_vector += ((depths[index] + 1) ** 1.1) * theta_vec
+            avg_vector += ((depths[index] + 1) ** 1.) * theta_vec
         else:
             avg_vector += theta_vec
     if n_neighbors == 0:

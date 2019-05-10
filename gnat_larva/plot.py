@@ -52,7 +52,9 @@ def save_plot(file, eta):
     frame.axes.get_yaxis().set_ticks([])
 
     # title
-    plt.title("n = 100; Angular noise = 0.2; Sensible Radius = 0.5 \n But the larva at the top are _more_ and active!")
+    # plt.title("n = 100; Angular noise = 0.2; Sensible Radius = 0.5 \n But the larva at the top are _more_ and active!")
+    plt.title("n = 100; Angular noise = 0.2; Sensible Radius = 0.5 \n Upper larva weigh more (angular noise coupled with depth)")
+
     # save plot
     plt.savefig("img/%s.png" % file[4:10])
 

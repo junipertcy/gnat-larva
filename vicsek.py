@@ -99,7 +99,7 @@ def run(n, eta, r, m):
         coords_ = mat[:, 0:2]
         thetas_ = mat[:, 2]
         plot_vectors(coords_, thetas_, method=m, depths=depths)
-        plot_foods(foods)
+        # plot_foods(foods)
         save_plot(filename, eta)
 
 
